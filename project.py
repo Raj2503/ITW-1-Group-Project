@@ -36,6 +36,19 @@ def markabsent(x):
     #print(df1)
     df1.to_excel('Attendance_Data.xlsx',index = False)
 
+def percentage():
+    root.withdraw()
+    record = Toplevel()
+    record.title("Attendance Percentage")
+    record.geometry("400x400")
+    MyLabel1 = Label(record,text="Welcome to Attendance Record for " + clicked.get()).grid(row=0,columnspan=4,padx=10)
+
+    for i in range(5):
+        name = Label(record,text=df1['Name'][i]).grid(row=i+1,column=0)
+        attended = (df1.iloc[i,4:]=="Present").sum()
+        total = 40 - (df1.iloc[1,4:].isnull()).sum()
+        percent = Label(record,text = (attended/total)*100).grid(row=i+1,column=1)
+    btn2 = Button(record,text="Close Window",command=lambda:[record.withdraw(),root.deiconify()]).grid(row=11)    
 
 
 def open():
@@ -75,9 +88,9 @@ options = [
 
 clicked = StringVar()
 clicked.set("Select one from below")
-drop = OptionMenu(root, clicked, *options).pack()
+drop = OptionMenu(root, clicked, *options).grid(row=1,column=2,columnspan=2)
 
-btn = Button(root,text="Open",command=open).pack()
-
+btn = Button(root,text="Mark Attendance",command=open).grid(row=2,column=2,columnspan=2)
+btn2 = Button(root,text="Show Attendance Percentage",command=percentage).grid(row=3,column=2,columnspan=2)
 
 root.mainloop()
