@@ -5,7 +5,7 @@ import pandas as pd
 df = pd.ExcelFile('output.xlsx')
 Sheet_names_list = df.sheet_names
 dflist = []
-print(Sheet_names_list)
+#print(Sheet_names_list)
 for sheet in Sheet_names_list :
    dflist.append(df.parse(sheet_name=sheet,index_col=None))
 
@@ -43,7 +43,7 @@ def markabsent(idx,x):
 
 def save():
     with pd.ExcelWriter('output.xlsx') as writer:
-        for i in range(7):
+        for i in range(6):
             dflist[i].to_excel(writer,sheet_name="Sheet_name_" + str(i+1),index=False)
 
 
