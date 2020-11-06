@@ -75,15 +75,15 @@ def percentage():
     x = 0
     if clicked.get()=='Course1':
         x=0
-    if clicked.get()=='Course2':
+    elif clicked.get()=='Course2':
         x=1
-    if clicked.get()=='Course3':
+    elif clicked.get()=='Course3':
         x=2
-    if clicked.get()=='Course4':
+    elif clicked.get()=='Course4':
         x=3
-    if clicked.get()=='Course5':
+    elif clicked.get()=='Course5':
         x=4
-    if clicked.get()=='Course6':
+    elif clicked.get()=='Course6':
         x=5
     for i in range(len(dflist[x].index)):
         rollno = Label(frame,text=dflist[x]['#'][i]).grid(row=i+1,column=0)
@@ -107,15 +107,15 @@ def open():
     x = 0
     if clicked.get()=='Course1':
         x=0
-    if clicked.get()=='Course2':
+    elif clicked.get()=='Course2':
         x=1
-    if clicked.get()=='Course3':
+    elif clicked.get()=='Course3':
         x=2
-    if clicked.get()=='Course4':
+    elif clicked.get()=='Course4':
         x=3
-    if clicked.get()=='Course5':
+    elif clicked.get()=='Course5':
         x=4
-    if clicked.get()=='Course6':
+    elif clicked.get()=='Course6':
         x=5
     
     for i in range(1,41):
@@ -154,7 +154,7 @@ def open():
         Present.append(c)
         Absent.append(d)
 	
-    btn2 = Button(frame,text="Close Window",command=lambda:[classroom.withdraw(),root.deiconify(),save()]).grid(row=len(dflist[x].index)+5,column=0,ipadx=20,pady=30)
+    btn2 = Button(frame,text="Save Record",command=lambda:[classroom.withdraw(),root.deiconify(),save()]).grid(row=len(dflist[x].index)+5,column=0,ipadx=20,pady=30)
 
     
 
