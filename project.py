@@ -14,7 +14,7 @@ root.title("Attendance Record & Management")
 root.geometry("400x400")
 root.iconbitmap('71404_student_attendance.ico')
 
-frame = LabelFrame(root,text="Welcome to Attendance Manager",padx=100, pady=80)
+frame = LabelFrame(root,text="Welcome to Attendance Manager",padx=100, pady=40)
 frame.pack(fill=BOTH,padx=10,pady=10)
 
 classroom = NONE
@@ -23,6 +23,8 @@ Absent = []
 DayN = 1
 R_no = IntVar()
 f_name = StringVar()
+day = IntVar()
+course = StringVar()
 
 #print("\n\n" + str(DayN) + "\n\n\n")
 
@@ -218,6 +220,93 @@ def delstudent():
 
     myButton = Button(frame,text="Delete Student", command=lambda:[dele.withdraw(),root.deiconify(),updateDelData()]).grid(row=4,padx=20,pady=30,columnspan=2)
 
+def markAttendance():
+    x=0
+    if course.get()=='Course1':
+        x=0
+    elif course.get()=='Course2':
+        x=1
+    elif course.get()=='Course3':
+        x=2
+    elif course.get()=='Course4':
+        x=3
+    elif course.get()=='Course5':
+        x=4
+    elif course.get()=='Course6':
+        x=5
+    
+    DayN = day.get()
+	
+    classroom = Toplevel()
+    classroom.title(clicked.get())
+    classroom.geometry("420x400")
+    classroom.iconbitmap('71404_student_attendance.ico')
+    canvas = Canvas(classroom, borderwidth=0)
+    frame = LabelFrame(canvas,text="Mark Student Attendance",padx=50,pady=10)
+    vsb = Scrollbar(classroom, orient="vertical", command=canvas.yview)
+    canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
+
+    vsb.pack(side="right", fill="y")
+    canvas.pack(side="left", fill="both", expand=True)
+    canvas.create_window((4,4), window=frame, anchor="nw", tags="frame")
+
+    # be sure that we call OnFrameConfigure on the right canvas
+    frame.bind("<Configure>", lambda event, canvas=canvas: OnFrameConfigure(canvas))
+    MyLabel1 = Label(frame,text="Welcome to Attendance Record for " + clicked.get() + " Day"+str(DayN)).grid(row=0,columnspan=3,padx=10)
+    MyLabel2 = Label(frame,text="Check the Box to Mark Student Attendance").grid(row=1,columnspan=3,padx=10,pady=(10,10))
+
+    for i in range(len(dflist[x].index)):
+        name = Label(frame,text=dflist[x]['Name'][i]).grid(row=i+3,column=0)
+        c = Checkbutton(frame,text="Present",variable=Present,onvalue=1,offvalue=0,command = lambda idx = i: markpresent(idx,x))
+        d = Checkbutton(frame,text="Absent",variable=Absent,onvalue=0,offvalue=1,command = lambda idx = i: markabsent(idx,x))
+        c.grid(row=i+3,column=1)
+        d.grid(row=i+3,column=2)
+        
+        Present.append(c)
+        Absent.append(d)
+	
+    btn2 = Button(frame,text="Save Record",command=lambda:[classroom.withdraw(),root.deiconify(),save()]).grid(row=len(dflist[x].index)+5,column=0,ipadx=20,pady=30)
+
+    
+
+def editAttendance():
+    global course
+    global day
+    root.withdraw()
+    edit = Toplevel()
+    edit.title("Edit Attendance Record")
+    edit.geometry("400x200")
+    edit.iconbitmap('71404_student_attendance.ico')
+    frame = LabelFrame(edit,text="Select Course & Day",padx=50,pady=10)
+    frame.pack(padx=10,pady=10)
+
+    options = [
+    "Course1",
+    "Course2",
+    "Course3",
+    "Course4",
+    "Course5",
+    "Course6",
+    ]
+
+    course = StringVar()
+    course.set("Select one from below")
+    courseLabel = Label(frame,text = "Course")
+    courseLabel.grid(row=1,column=0)
+    drop = OptionMenu(frame, clicked, *options).grid(row=1,column=1,columnspan=2)
+
+    dayLabel = Label(frame,text = "Select Day")
+    dayLabel.grid(row=2,column=0,pady=(10, 0))
+    day = Entry(frame, width=30,borderwidth=3)
+    day.grid(row=2, column=1, padx=20, pady=(10, 0))    
+
+    myButton = Button(frame,text="Mark Attendance Again", command=lambda:[edit.withdraw(),markAttendance()]).grid(row=4,padx=20,pady=30,columnspan=2)
+
+
+
+
+courLabel = Label(frame,text = "Select a course from below to\nView or Mark Attendance")
+courLabel.grid(row=0,column=0,columnspan=4,pady=(0,10))
 options = [
     "Course1",
     "Course2",
@@ -233,7 +322,8 @@ drop = OptionMenu(frame, clicked, *options).grid(row=1,column=2,columnspan=2)
 
 btn = Button(frame,text="Mark Attendance",command=lambda:[open()]).grid(row=2,column=2,columnspan=2,pady=10)
 btn2 = Button(frame,text="Show Attendance Percentage",command=lambda:[percentage()]).grid(row=3,column=2,columnspan=2,pady=10)
-btn3 = Button(frame,text="Add New Student",command=lambda:[newstudent()]).grid(row=4,column=2,columnspan=2,pady=10)
-btn4 = Button(frame,text="Delete Student",command=lambda:[delstudent()]).grid(row=5,column=2,columnspan=2,pady=10)
+btn3 = Button(frame,text="Add New Student",command=lambda:[newstudent()]).grid(row=4,column=2,columnspan=2,pady=10,ipadx=13)
+btn4 = Button(frame,text="Delete Student",command=lambda:[delstudent()]).grid(row=5,column=2,columnspan=2,pady=10,ipadx=21)
+btn5 = Button(frame,text="Edit Attendance Record",command=lambda:[editAttendance()]).grid(row=6,column=2,columnspan=2,pady=10)
 
 root.mainloop()
