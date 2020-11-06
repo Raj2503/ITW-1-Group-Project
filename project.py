@@ -12,7 +12,9 @@ for sheet in Sheet_names_list :
 root = Tk()
 root.title("Attendance Record & Management")
 root.geometry("400x300")
-frame = Frame(root,padx=100, pady=80)
+root.iconbitmap('71404_student_attendance.ico')
+
+frame = LabelFrame(root,text="Welcome to Attendance Manager",padx=100, pady=80)
 frame.pack(fill=BOTH,padx=10,pady=10)
 
 classroom = NONE
@@ -56,9 +58,10 @@ def percentage():
     record = Toplevel()
     record.title("Attendance Percentage")
     record.geometry("450x400")
+    record.iconbitmap('71404_student_attendance.ico')
     y=2
     canvas = Canvas(record, borderwidth=0)
-    frame = Frame(canvas)
+    frame = LabelFrame(canvas,text="Student Attendance Record",padx=50,pady=10)
     vsb = Scrollbar(record, orient="vertical", command=canvas.yview)
     canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
 
@@ -116,7 +119,7 @@ def open():
         x=5
     
     for i in range(1,41):
-        if dflist[x]['Day'+str(i)].isnull().sum()==5:
+        if dflist[x]['Day'+str(i)].isnull().sum()==len(dflist[x].index):
             DayN =i
             break
 	
@@ -124,8 +127,9 @@ def open():
     classroom = Toplevel()
     classroom.title(clicked.get())
     classroom.geometry("420x400")
+    classroom.iconbitmap('71404_student_attendance.ico')
     canvas = Canvas(classroom, borderwidth=0)
-    frame = Frame(canvas)
+    frame = LabelFrame(canvas,text="Mark Student Attendance",padx=50,pady=10)
     vsb = Scrollbar(classroom, orient="vertical", command=canvas.yview)
     canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
 
