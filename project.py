@@ -75,7 +75,7 @@ def newstudent():
     RollLabel = Label(frame,text = "Roll Number")
     RollLabel.grid(row=0,column=0)
     RollNo = Label(frame,text = len(dflist[0].index)+2).grid(row=0,column=1)
-    f_name = Entry(frame, width=30)
+    f_name = Entry(frame, width=30,borderwidth=3)
     f_name.grid(row=1, column=1, padx=20, pady=(10, 0))
     f_name_label = Label(frame, text="Full Name")
     f_name_label.grid(row=1, column=0, pady=(10, 0))
