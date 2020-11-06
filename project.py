@@ -48,10 +48,40 @@ def markabsent(idx,x):
 def OnFrameConfigure(canvas):
     canvas.configure(scrollregion=canvas.bbox("all"))
 
+
+
+
 def save():
     with pd.ExcelWriter('output.xlsx') as writer:
         for i in range(6):
             dflist[i].to_excel(writer,sheet_name="Sheet_name_" + str(i+1),index=False)
+
+def updatedata():
+    for i in range(6):
+        df2 = {'#':len(dflist[0].index)+2,'Name': f_name.get()}
+        dflist[i]=dflist[i].append(df2,ignore_index = True)
+    save()
+
+f_name = StringVar()
+def newstudent():
+    global f_name
+    root.withdraw()
+    newstu = Toplevel()
+    newstu.title("Enroll New Student")
+    newstu.geometry("400x200")
+    newstu.iconbitmap('71404_student_attendance.ico')
+    frame = LabelFrame(newstu,text="New Student Details",padx=50,pady=10)
+    frame.pack(padx=10,pady=10)
+    RollLabel = Label(frame,text = "Roll Number")
+    RollLabel.grid(row=0,column=0)
+    RollNo = Label(frame,text = len(dflist[0].index)+2).grid(row=0,column=1)
+    f_name = Entry(frame, width=30)
+    f_name.grid(row=1, column=1, padx=20, pady=(10, 0))
+    f_name_label = Label(frame, text="Full Name")
+    f_name_label.grid(row=1, column=0, pady=(10, 0))
+    myButton = Button(frame,text="Eroll Student", command=lambda:[newstu.withdraw(),root.deiconify(),updatedata()])
+    myButton.grid(row=4,padx=20,pady=30,columnspan=2)
+
 
 def percentage():
     root.withdraw()
@@ -174,5 +204,6 @@ drop = OptionMenu(frame, clicked, *options).grid(row=1,column=2,columnspan=2)
 
 btn = Button(frame,text="Mark Attendance",command=lambda:[open()]).grid(row=2,column=2,columnspan=2,pady=10)
 btn2 = Button(frame,text="Show Attendance Percentage",command=lambda:[percentage()]).grid(row=3,column=2,columnspan=2,pady=10)
+btn3 = Button(frame,text="Add New Student",command=lambda:[newstudent()]).grid(row=4,column=2,columnspan=2,pady=10)
 
 root.mainloop()
