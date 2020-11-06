@@ -5,7 +5,7 @@ import pandas as pd
 df = pd.ExcelFile('output.xlsx')
 Sheet_names_list = df.sheet_names
 dflist = []
-print(Sheet_names_list)
+#print(Sheet_names_list)
 for sheet in Sheet_names_list :
    dflist.append(df.parse(sheet_name=sheet,index_col=None))
 
@@ -86,8 +86,8 @@ def percentage():
         rollno = Label(frame,text=dflist[x]['#'][i]).grid(row=i+1,column=0)
         name = Label(frame,text=dflist[x]['Name'][i]).grid(row=i+1,column=1)
         attended = (dflist[x].iloc[i,2:]=="Present").sum()
-        total = 40 - (dflist[x].iloc[1,2:].isnull()).sum()
-        print(attended,total,END)
+        total = 40 - (dflist[x].iloc[i,2:].isnull()).sum()
+        #print(attended,total,END)
         if (attended/total)*100 < 75:
             percent = Label(frame,text = "{:.2f}".format((attended/total)*100) +" %", fg = "red",font = "Times").grid(row=i+1,column=2)
         else:
