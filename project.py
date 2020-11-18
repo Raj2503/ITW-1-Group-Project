@@ -96,7 +96,7 @@ def percentage():
     root.withdraw()
     record = Toplevel()
     record.title("Attendance Percentage")
-    record.geometry("450x400")
+    record.geometry("390x400")
     record.iconbitmap('71404_student_attendance.ico')
     y=2
     canvas = Canvas(record, borderwidth=0)
