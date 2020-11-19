@@ -60,7 +60,7 @@ def save():
 
 def updateAddData():
     for i in range(6):
-        df2 = {'RollNo':len(dflist[0].index)+2,'Name': f_name.get()}
+        df2 = {'RollNo':len(dflist[i].index)+1,'Name': f_name.get()}
         dflist[i]=dflist[i].append(df2,ignore_index = True)
     save()
 
