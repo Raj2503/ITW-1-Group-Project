@@ -1,11 +1,10 @@
 from tkinter import *
-from PIL import ImageTk,Image
 import pandas as pd
 
 df = pd.ExcelFile('output.xlsx')
 Sheet_names_list = df.sheet_names
 dflist = []
-#print(Sheet_names_list)
+
 for sheet in Sheet_names_list :
    dflist.append(df.parse(sheet_name=sheet,index_col=None))
 
@@ -26,32 +25,24 @@ f_name = StringVar()
 day = IntVar()
 course = StringVar()
 
-#print("\n\n" + str(DayN) + "\n\n\n")
-
 def show():
     global DayN
     myLabel = Label(root,text=clicked.get()).pack()
+
 def onClick(idx):
     global DayN
-    print(idx) # Print the index value
- #   print(Attended[idx].cget("text"))
+    print(idx) 
 
 def markpresent(idx,x):
     global DayN
     dflist[x]['Day'+str(int(DayN))].iloc[idx] = Present[idx].cget("text")
-    #print(df1)
-
 
 def markabsent(idx,x):
     global DayN
     dflist[x]['Day'+str(int(DayN))].iloc[idx] = Absent[idx].cget("text")
-    #print(df1)
 
 def OnFrameConfigure(canvas):
     canvas.configure(scrollregion=canvas.bbox("all"))
-
-
-
 
 def save():
     with pd.ExcelWriter('output.xlsx') as writer:
@@ -71,7 +62,6 @@ def updateDelData():
         dflist[i] = dflist[i][(dflist[i].Name != name) & (dflist[i].RollNo != rno)]
     save()
 
-
 def newstudent():
     global f_name
     root.withdraw()
@@ -79,11 +69,14 @@ def newstudent():
     newstu.title("Enroll New Student")
     newstu.geometry("400x200")
     newstu.iconbitmap('71404_student_attendance.ico')
+
     frame = LabelFrame(newstu,text="New Student Details",padx=50,pady=10)
     frame.pack(padx=10,pady=10)
+
     RollLabel = Label(frame,text = "Roll Number")
     RollLabel.grid(row=0,column=0)
     RollNo = Label(frame,text = len(dflist[0].index)+2).grid(row=0,column=1)
+    
     f_name = Entry(frame, width=30,borderwidth=3)
     f_name.grid(row=1, column=1, padx=20, pady=(10, 0))
     f_name_label = Label(frame, text="Full Name")
@@ -91,25 +84,22 @@ def newstudent():
     myButton = Button(frame,text="Eroll Student", command=lambda:[newstu.withdraw(),root.deiconify(),updateAddData()])
     myButton.grid(row=4,padx=20,pady=30,columnspan=2)
 
-
 def percentage():
     root.withdraw()
     record = Toplevel()
     record.title("Attendance Percentage")
     record.geometry("390x400")
     record.iconbitmap('71404_student_attendance.ico')
-    y=2
+
     canvas = Canvas(record, borderwidth=0)
     frame = LabelFrame(canvas,text="Student Attendance Record",padx=50,pady=10)
     vsb = Scrollbar(record, orient="vertical", command=canvas.yview)
     canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
-
     vsb.pack(side="right", fill="y")
     canvas.pack(side="left", fill="both", expand=True)
     canvas.create_window((4,4), window=frame, anchor="nw", tags="frame")
-
-    # be sure that we call OnFrameConfigure on the right canvas
     frame.bind("<Configure>", lambda event, canvas=canvas: OnFrameConfigure(canvas))
+    
     MyLabel1 = Label(frame,text="Welcome to Attendance Record for " + clicked.get()).grid(row=0,columnspan=4,padx=10)
     x = 0
     if clicked.get()=='Course1':
@@ -124,12 +114,13 @@ def percentage():
         x=4
     elif clicked.get()=='Course6':
         x=5
+
     for i in range(len(dflist[x].index)):
         rollno = Label(frame,text=dflist[x]['RollNo'][i]).grid(row=i+1,column=0)
         name = Label(frame,text=dflist[x]['Name'][i]).grid(row=i+1,column=1)
         attended = (dflist[x].iloc[i,2:]=="Present").sum()
         total = 40 - (dflist[x].iloc[i,2:].isnull()).sum()
-        #print(attended,total,END)
+
         if (attended/total)*100 < 75:
             percent = Label(frame,text = "{:.2f}".format((attended/total)*100) +" %", fg = "red",font = "Times").grid(row=i+1,column=2)
         else:
@@ -161,23 +152,21 @@ def open():
         if dflist[x]['Day'+str(i)].isnull().sum()==len(dflist[x].index):
             DayN =i
             break
-	
 
     classroom = Toplevel()
     classroom.title(clicked.get())
     classroom.geometry("420x400")
     classroom.iconbitmap('71404_student_attendance.ico')
+
     canvas = Canvas(classroom, borderwidth=0)
     frame = LabelFrame(canvas,text="Mark Student Attendance",padx=50,pady=10)
     vsb = Scrollbar(classroom, orient="vertical", command=canvas.yview)
     canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
-
     vsb.pack(side="right", fill="y")
     canvas.pack(side="left", fill="both", expand=True)
     canvas.create_window((4,4), window=frame, anchor="nw", tags="frame")
-
-    # be sure that we call OnFrameConfigure on the right canvas
     frame.bind("<Configure>", lambda event, canvas=canvas: OnFrameConfigure(canvas))
+
     MyLabel1 = Label(frame,text="Welcome to Attendance Record for " + clicked.get() + " Day"+str(DayN)).grid(row=0,columnspan=3,padx=10)
     MyLabel2 = Label(frame,text="Check the Box to mark student attendance").grid(row=1,columnspan=3,padx=10,pady=(10,10))
     
@@ -201,10 +190,10 @@ def delstudent():
     global R_no
     root.withdraw()
     dele = Toplevel()
-    dele.title("Enroll New Student")
+    dele.title("Delete Student")
     dele.geometry("400x200")
     dele.iconbitmap('71404_student_attendance.ico')
-    frame = LabelFrame(dele,text="New Student Details",padx=50,pady=10)
+    frame = LabelFrame(dele,text="Student Details",padx=50,pady=10)
     frame.pack(padx=10,pady=10)
     
     RollLabel = Label(frame,text = "Roll Number")
@@ -241,16 +230,15 @@ def markAttendance():
     classroom.title(clicked.get())
     classroom.geometry("420x400")
     classroom.iconbitmap('71404_student_attendance.ico')
+
     canvas = Canvas(classroom, borderwidth=0)
     frame = LabelFrame(canvas,text="Mark Student Attendance",padx=50,pady=10)
     vsb = Scrollbar(classroom, orient="vertical", command=canvas.yview)
-    canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)       
-
+    canvas.configure(yscrollcommand=vsb.set, width=1200, height=80)
     vsb.pack(side="right", fill="y")
     canvas.pack(side="left", fill="both", expand=True)
     canvas.create_window((4,4), window=frame, anchor="nw", tags="frame")
 
-    # be sure that we call OnFrameConfigure on the right canvas
     frame.bind("<Configure>", lambda event, canvas=canvas: OnFrameConfigure(canvas))
     MyLabel1 = Label(frame,text="Welcome to Attendance Record for " + clicked.get() + " Day"+str(DayN)).grid(row=0,columnspan=3,padx=10)
     MyLabel2 = Label(frame,text="Check the Box to Mark Student Attendance").grid(row=1,columnspan=3,padx=10,pady=(10,10))
@@ -266,9 +254,7 @@ def markAttendance():
         Absent.append(d)
 	
     btn2 = Button(frame,text="Save Record",command=lambda:[classroom.withdraw(),root.deiconify(),save()]).grid(row=len(dflist[x].index)+5,column=0,ipadx=20,pady=30)
-
     
-
 def editAttendance():
     global course
     global day
@@ -301,8 +287,6 @@ def editAttendance():
     day.grid(row=2, column=1, padx=20, pady=(10, 0))    
 
     myButton = Button(frame,text="Mark Attendance Again", command=lambda:[edit.withdraw(),markAttendance()]).grid(row=4,padx=20,pady=30,columnspan=2)
-
-
 
 
 courLabel = Label(frame,text = "Select a course from below to\nView or Mark Attendance")
