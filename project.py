@@ -75,7 +75,7 @@ def newstudent():
 
     RollLabel = Label(frame,text = "Roll Number")
     RollLabel.grid(row=0,column=0)
-    RollNo = Label(frame,text = len(dflist[0].index)+2).grid(row=0,column=1)
+    RollNo = Label(frame,text = len(dflist[0].index)+1).grid(row=0,column=1)
     
     f_name = Entry(frame, width=30,borderwidth=3)
     f_name.grid(row=1, column=1, padx=20, pady=(10, 0))
@@ -210,6 +210,10 @@ def delstudent():
     myButton = Button(frame,text="Delete Student", command=lambda:[dele.withdraw(),root.deiconify(),updateDelData()]).grid(row=4,padx=20,pady=30,columnspan=2)
 
 def markAttendance():
+    global Present
+    global Absent
+    global DayN
+    global day
     x=0
     if course.get()=='Course1':
         x=0
@@ -224,7 +228,7 @@ def markAttendance():
     elif course.get()=='Course6':
         x=5
     
-    DayN = day.get()
+    DayN = int(day.get())
 	
     classroom = Toplevel()
     classroom.title(clicked.get())
