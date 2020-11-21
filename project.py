@@ -51,7 +51,7 @@ def save():
 
 def updateAddData():
     for i in range(6):
-        df2 = {'RollNo':len(dflist[i].index)+1,'Name': f_name.get()}
+        df2 = {'RollNo':dflist[0].iloc[-1]['RollNo'] + 1,'Name': f_name.get()}
         dflist[i]=dflist[i].append(df2,ignore_index = True)
     save()
 
@@ -75,7 +75,7 @@ def newstudent():
 
     RollLabel = Label(frame,text = "Roll Number")
     RollLabel.grid(row=0,column=0)
-    RollNo = Label(frame,text = len(dflist[0].index)+1).grid(row=0,column=1)
+    RollNo = Label(frame,text = dflist[0].iloc[-1]['RollNo'] + 1).grid(row=0,column=1)
     
     f_name = Entry(frame, width=30,borderwidth=3)
     f_name.grid(row=1, column=1, padx=20, pady=(10, 0))
